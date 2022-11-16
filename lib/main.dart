@@ -20,6 +20,7 @@ class Home extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Obx(() => Text('${c.count}')),
+            Padding(padding: EdgeInsets.all(5)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
