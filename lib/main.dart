@@ -2,58 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project1/controller.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(GetMaterialApp(home: Home()));
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
-      home: MyPage(),
-    );
-  }
-}
-
-class MyPage extends StatelessWidget {
-  const MyPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Controller controller = Get.put(Controller());
+    final Controller c = Get.put(Controller());
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GetX'),
+        title: Text('FirstPage'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GetBuilder<Controller>(
-              //init: Controller(),
-                builder: (_) {
-              return Text(
-                //'Current value is: ${Get.find<Controller>().x}',
-                'Current value is: ${controller.x}',
-                style: TextStyle(fontSize: 20, color: Colors.red),
-              );
-            }),
-            SizedBox(
-              height: 20,
+            Obx(() => Text('${c.count}')),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    c.increment();
+                  },
+                  child: Text('+'),
+                ),
+                Padding(padding: EdgeInsets.all(10)),
+                ElevatedButton(
+                  onPressed: () {
+                    c.decrement();
+                  },
+                  child: Text('-'),
+                ),
+              ],
             ),
             ElevatedButton(
               onPressed: () {
-                controller.increment();
-                //Get.find<Controller>().increment();
+                Get.to(SecondPage());
               },
-              child: Text('Add number'),
+              child: Text('Go to SecondPage'),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  final Controller c = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Text('${c.count}'),
       ),
     );
   }
